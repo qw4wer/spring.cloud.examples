@@ -1,0 +1,29 @@
+server:
+  port: 8878
+
+spring:
+  application:
+    name: nacos-gateway-oauth
+  cloud:
+    nacos:
+      discovery:
+        server-addr: 172.16.8.90:8848
+      config:
+        server-addr: 172.16.8.90:8848
+    gateway:
+      routes:
+        - id: test
+          uri: lb://nacos-consumer
+          predicates:
+            - Path=/test
+          filters:
+            - RewritePath=/test,/callHello
+        - id: ttt
+          uri: lb://nacos-provider
+          predicates:
+            - Path=/t1
+          filters:
+            - RewritePath=/t1,/hello
+logging:
+  level:
+    org.springframework: debug

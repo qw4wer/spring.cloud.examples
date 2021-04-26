@@ -1,0 +1,16 @@
+server:
+  port: 5424
+
+spring:
+  application:
+    name: nacos-consumer
+  cloud:
+    nacos:
+      discovery:
+        server-addr: 172.16.8.90:8848
+      config:
+        server-addr: 172.16.8.90:8848
+
+feign:
+  circuitbreaker:
+    enabled: true
