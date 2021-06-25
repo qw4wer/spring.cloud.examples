@@ -1,6 +1,7 @@
 package com.qw4wer.spring.cloud.nacos.examples.gateway.auth.security;
 
 import com.qw4wer.spring.cloud.nacos.examples.gateway.auth.services.MyUserDetailsService;
+import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AbstractUserDetailsReactiveAuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;
@@ -30,6 +31,9 @@ public class AuthenticationManager extends AbstractUserDetailsReactiveAuthentica
         final String presentedPassword = (String) authentication.getCredentials();
         final String tenant = token.getTenant();
         final String host = token.getHost();
+
+        if(StringUtils.isEmpty(username) || StringUtils.isEmpty(presentedPassword))
+            return Mono.error(new BadCredentialsException("username or password is null"));
         return retrieveUser(username)
                 .publishOn(scheduler)
                 .filter(u -> passwordEncoder.matches(presentedPassword, u.getPassword()))

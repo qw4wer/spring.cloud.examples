@@ -5,6 +5,7 @@ import com.qw4wer.spring.cloud.nacos.examples.gateway.auth.security.Authenticati
 import com.qw4wer.spring.cloud.nacos.examples.gateway.auth.security.AuthorizeConfigManager;
 import com.qw4wer.spring.cloud.nacos.examples.gateway.auth.utils.ResponseUtils;
 import com.qw4wer.spring.cloud.nacos.examples.gateway.auth.utils.RestResult;
+import lombok.extern.apachecommons.CommonsLog;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -24,12 +25,9 @@ import org.springframework.security.web.server.authorization.ServerAccessDeniedH
 
 import java.util.LinkedList;
 
-/**
- * @Author: pilsy
- * @Date: 2020/6/29 0029 16:54
- */
 @Configuration
 @EnableWebFluxSecurity
+@CommonsLog
 public class SecurityConfig {
 
     @Autowired
@@ -74,7 +72,7 @@ public class SecurityConfig {
                 .pathMatchers(AUTH_WHITELIST).permitAll()
                 // 访问权限控制
                 .anyExchange().access(authorizeConfigManager)
-                .and().exceptionHandling().accessDeniedHandler(serverAccessDeniedHandler())
+                .and().exceptionHandling().authenticationEntryPoint(serverAuthenticationEntryPoint()).accessDeniedHandler(serverAccessDeniedHandler())
                 .and().build();
         // 设置自定义登录参数转换器
         chain.getWebFilters()
@@ -112,7 +110,7 @@ public class SecurityConfig {
     @Bean
     public ServerAuthenticationFailureHandler jsonServerAuthenticationFailureHandler() {
         ServerAuthenticationFailureHandler entryPoint = (webFilterExchange, authentication) -> {
-            RestResult restResult = RestResult.error(ServerCodeEnum.LOGIN_ERROR);
+            RestResult restResult = RestResult.error(500,authentication.getMessage());
             return ResponseUtils.write(webFilterExchange.getExchange().getResponse(), restResult);
         };
         return entryPoint;
@@ -128,6 +126,7 @@ public class SecurityConfig {
         return entryPoint;
     }
 
+    @Bean
     public ServerAccessDeniedHandler serverAccessDeniedHandler() {
         return (exchange, denied) -> {
             ServerHttpResponse response = exchange.getResponse();
@@ -147,6 +146,15 @@ public class SecurityConfig {
         LinkedList<ReactiveAuthenticationManager> managers = new LinkedList<>();
         managers.add(authenticationManager);
         return new DelegatingReactiveAuthenticationManager(managers);
+    }
+
+    @Bean
+    ServerAuthenticationEntryPoint serverAuthenticationEntryPoint() {
+        return (exchange, ex) -> {
+            ServerHttpResponse response = exchange.getResponse();
+            RestResult restResult = RestResult.error(ServerCodeEnum.NOT_AUTHORITY);
+            return ResponseUtils.write(response, restResult);
+        };
     }
 
 

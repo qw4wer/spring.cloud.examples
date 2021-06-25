@@ -5,10 +5,14 @@ import com.qw4wer.spring.cloud.nacos.examples.provider.config.UserConfig;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.cloud.context.config.annotation.RefreshScope;
+import org.springframework.cloud.stream.function.StreamBridge;
 import org.springframework.core.env.Environment;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 
 @RestController
 @RefreshScope
@@ -29,6 +33,9 @@ public class SampleController {
     @Value("${user.age:25}")
     Integer age;
 
+    @Autowired
+    private StreamBridge streamBridge;
+
     @RequestMapping("/user")
     public String simple() {
         return "Hello Nacos Config!" + "Hello " + userName + " " + age + " [UserConfig]: "
@@ -48,5 +55,11 @@ public class SampleController {
     @RequestMapping("/hello")
     public String hello() {
         return "hello" + userName + age;
+    }
+
+    @RequestMapping("/pull")
+    public String pull(){
+        streamBridge.send("source2-out-0", LocalDateTime.now().format(DateTimeFormatter.ISO_LOCAL_DATE_TIME));
+        return "done";
     }
 }

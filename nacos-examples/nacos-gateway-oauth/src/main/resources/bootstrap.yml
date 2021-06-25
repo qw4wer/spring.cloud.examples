@@ -24,6 +24,10 @@ spring:
             - Path=/t1
           filters:
             - RewritePath=/t1,/hello
+        - id: pull
+          uri: lb://nacos-provider
+          predicates:
+            - Path=/pull
 logging:
   level:
     org.springframework: debug

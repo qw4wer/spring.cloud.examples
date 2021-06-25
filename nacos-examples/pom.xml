@@ -14,7 +14,7 @@
   <modules>
     <module>nacos-producer</module>
     <module>nacos-consumer</module>
-    <module>nacos-gateway</module><module>nacos-gateway-oauth</module><module>nacos-oauth</module>
+    <module>nacos-gateway</module><module>nacos-gateway-oauth</module><module>nacos-oauth</module><module>nacos-stream</module>
   </modules>
 
   <properties>

@@ -1,0 +1,17 @@
+spring:
+  rabbitmq:
+    host: 172.16.8.90
+    username: guest
+    password: guest
+
+  cloud:
+    stream:
+      bindings:
+        sink1-in-0:
+          destination: test3
+    function:
+      definition: sink1
+
+
+server:
+  port: 8081
