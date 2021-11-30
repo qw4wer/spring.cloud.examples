@@ -7,12 +7,10 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.cloud.context.config.annotation.RefreshScope;
 import org.springframework.cloud.stream.function.StreamBridge;
 import org.springframework.core.env.Environment;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.messaging.support.MessageBuilder;
+import org.springframework.web.bind.annotation.*;
 
-import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
+import java.util.concurrent.TimeUnit;
 
 @RestController
 @RefreshScope
@@ -58,8 +56,23 @@ public class SampleController {
     }
 
     @RequestMapping("/pull")
-    public String pull(){
-        streamBridge.send("source2-out-0", LocalDateTime.now().format(DateTimeFormatter.ISO_LOCAL_DATE_TIME));
+    public String pull() {
+        for (int i = 0; i < 10; i++) {
+            streamBridge.send("source2-out-0", MessageBuilder.withPayload(1).build());
+            try {
+                TimeUnit.MILLISECONDS.sleep(100);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+        }
+
         return "done";
+    }
+
+    @ResponseBody
+    @RequestMapping("/post")
+    public UserConfig.User post(@RequestBody UserConfig.User user) {
+        user.setName(userName);
+        return user;
     }
 }

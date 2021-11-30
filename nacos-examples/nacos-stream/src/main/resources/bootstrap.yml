@@ -9,6 +9,7 @@ spring:
       bindings:
         sink1-in-0:
           destination: test3
+          group: stream
     function:
       definition: sink1
 
