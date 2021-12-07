@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.qw4wer.spring.cloud.nacos.examples.provider.data.mapper.master.IUserMapper">
+
+	<!-- 查询的resultMap to user -->
+	<resultMap type="com.qw4wer.spring.cloud.nacos.examples.common.data.pojo.User" id="userResultMap">
+		<result property="id" column="id" />
+		<result property="password" column="password" />
+		<result property="realName" column="real_name" />
+		<result property="userName" column="user_name" />
+	</resultMap>
+	
+	<!-- 插入一条 user -->
+	<insert id="addUser" parameterType="com.qw4wer.spring.cloud.nacos.examples.common.data.pojo.User">
+		<selectKey resultType="java.lang.Long" keyProperty="id" order="AFTER" >
+			SELECT @@IDENTITY
+		</selectKey>
+		
+		insert into user(
+				id,
+				password,
+				real_name,
+				user_name
+		)
+		VALUES(
+				#{id},
+				#{password},
+				#{realName},
+				#{userName}
+		)
+	</insert>	
+	
+	<update id="deleteUser" parameterType="int">
+		update user set is_deleted='1' where id=#{id}
+	</update>
+	
+	<!-- 根据id更新一条 user -->
+	<update id="updateUser" parameterType="com.qw4wer.spring.cloud.nacos.examples.common.data.pojo.User">
+		update user set 
+		password=#{password},
+		real_name=#{realName},
+		user_name=#{userName}
+		where id = #{id}
+	</update>
+	
+	<!-- 根据id查询一条 user -->
+	<select id="findUserById" resultMap="userResultMap">
+		select * from user where id=#{id}
+	</select>
+	
+	<!-- 按条件分页查询 user -->
+	<select id="findUserByPage" resultMap="userResultMap" parameterType="com.qw4wer.spring.cloud.nacos.examples.common.data.pojo.UserCond">
+		select * from user
+		<include refid="findWhereCond"/> 
+	</select>		
+	
+	<!-- 按条件查询所有 user -->
+	<select id="findUserByCond" resultMap="userResultMap" parameterType="com.qw4wer.spring.cloud.nacos.examples.common.data.pojo.UserCond">
+		select * from user
+		<include refid="findWhereCond"/> 
+	</select>	
+	
+	<!-- 查询条件 -->
+	<sql id="findWhereCond"> 
+		<where>
+            <if test="password != null and password !=''">
+                AND password = #{password}
+            </if>
+            <if test="realName != null and realName !=''">
+                AND real_name = #{realName}
+            </if>
+            <if test="userName != null and userName !=''">
+                AND user_name = #{userName}
+            </if>
+		</where>
+	</sql>
+
+    <update id="batchInsertUser">
+        insert into user(
+                    id,
+                    password,
+                    real_name,
+                    user_name
+		)
+        values
+        <foreach collection="collection" item="item" separator=",">
+            (
+                    #{item.id},
+                    #{item.password},
+                    #{item.realName},
+                    #{item.userName}
+            )
+        </foreach>
+	</update>
+</mapper>

@@ -2,6 +2,12 @@ server:
   port: 5423
 
 spring:
+  datasource:
+    druid:
+      master:
+        url: jdbc:mysql://172.16.8.90:3306/nacos?useUnicode=true&serverTimezone=Asia/Shanghai
+        username: root
+        password: root
   rabbitmq:
     host: 172.16.8.90
     username: guest
