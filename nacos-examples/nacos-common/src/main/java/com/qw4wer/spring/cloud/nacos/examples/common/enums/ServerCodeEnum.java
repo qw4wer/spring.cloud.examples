@@ -1,4 +1,4 @@
-package com.qw4wer.spring.cloud.nacos.examples.gateway.auth.enums;
+package com.qw4wer.spring.cloud.nacos.examples.common.enums;
 
 
 import lombok.AllArgsConstructor;

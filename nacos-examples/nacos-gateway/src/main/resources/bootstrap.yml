@@ -26,4 +26,4 @@ spring:
             - RewritePath=/t1,/hello
 
 logging:
-  config: classpath:log4j2.xml
+  config: classpath:logback.xml

@@ -1,11 +1,11 @@
 server:
-  port: 5423
+  port: 8080
 
 spring:
   datasource:
     druid:
       master:
-        url: jdbc:mysql://127.0.0.1:3307/springboot?useUnicode=true&serverTimezone=Asia/Shanghai
+        url: jdbc:mysql://mysql:3306/nacos?useUnicode=true&serverTimezone=Asia/Shanghai
         username: root
         password: admin
   rabbitmq:
@@ -29,5 +29,3 @@ spring:
   application:
     name: nacos-provider
 
-logging:
-  config: classpath:logback.xml

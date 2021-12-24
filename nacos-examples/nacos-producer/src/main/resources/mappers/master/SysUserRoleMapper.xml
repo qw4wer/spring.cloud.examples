@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.qw4wer.spring.cloud.nacos.examples.provider.data.mapper.master.ISysUserRoleMapper">
+
+	<!-- 查询的resultMap to sysUserRole -->
+	<resultMap type="com.qw4wer.spring.cloud.nacos.examples.common.data.pojo.SysUserRole" id="sysUserRoleResultMap">
+		<result property="id" column="id" />
+		<result property="userId" column="user_id" />
+		<result property="roleId" column="role_id" />
+	</resultMap>
+	
+	<!-- 插入一条 sysUserRole -->
+	<insert id="addSysUserRole" parameterType="com.qw4wer.spring.cloud.nacos.examples.common.data.pojo.SysUserRole">
+		<selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
+			SELECT @@IDENTITY
+		</selectKey>
+		
+		insert into sys_user_role(
+				id,
+				user_id,
+				role_id
+		)
+		VALUES(
+				#{id},
+				#{userId},
+				#{roleId}
+		)
+	</insert>	
+	
+	<update id="deleteSysUserRole" parameterType="int">
+		update sys_user_role set is_deleted='1' where id=#{id}
+	</update>
+	
+	<!-- 根据id更新一条 sysUserRole -->
+	<update id="updateSysUserRole" parameterType="com.qw4wer.spring.cloud.nacos.examples.common.data.pojo.SysUserRole">
+		update sys_user_role set 
+		user_id=#{userId},
+		role_id=#{roleId}
+		where id = #{id}
+	</update>
+	
+	<!-- 根据id查询一条 sysUserRole -->
+	<select id="findSysUserRoleById" resultMap="sysUserRoleResultMap">
+		select * from sys_user_role where id=#{id}
+	</select>
+	
+	<!-- 按条件分页查询 sysUserRole -->
+	<select id="findSysUserRoleByPage" resultMap="sysUserRoleResultMap" parameterType="com.qw4wer.spring.cloud.nacos.examples.common.data.pojo.SysUserRoleCond">
+		select * from sys_user_role
+		<include refid="findWhereCond"/> 
+	</select>		
+	
+	<!-- 按条件查询所有 sysUserRole -->
+	<select id="findSysUserRoleByCond" resultMap="sysUserRoleResultMap" parameterType="com.qw4wer.spring.cloud.nacos.examples.common.data.pojo.SysUserRoleCond">
+		select * from sys_user_role
+		<include refid="findWhereCond"/> 
+	</select>	
+	
+	<!-- 查询条件 -->
+	<sql id="findWhereCond"> 
+		<where>
+            <if test="userId != null and userId !=''">
+                AND user_id = #{userId}
+            </if>
+            <if test="roleId != null and roleId !=''">
+                AND role_id = #{roleId}
+            </if>
+		</where>
+	</sql>
+
+    <update id="batchInsertSysUserRole">
+        insert into sys_user_role(
+                    id,
+                    user_id,
+                    role_id
+		)
+        values
+        <foreach collection="collection" item="item" separator=",">
+            (
+                    #{item.id},
+                    #{item.userId},
+                    #{item.roleId}
+            )
+        </foreach>
+	</update>
+</mapper>

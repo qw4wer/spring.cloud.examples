@@ -1,5 +1,6 @@
 package com.qw4wer.spring.cloud.nacos.examples.common;
 
+import com.qw4wer.spring.cloud.nacos.examples.common.enums.ServerCodeEnum;
 import lombok.Data;
 
 @Data
@@ -43,10 +44,16 @@ public class RestResult<T> {
 
     public static RestResult error(int code, String message) {
         RestResult restResult = new RestResult();
-        restResult.setCode(400);
         restResult.setSuccess(false);
         restResult.setMessage(message);
         restResult.setCode(code);
+        return restResult;
+    }
+    public static RestResult error(ServerCodeEnum serverCodeEnum) {
+        RestResult restResult = new RestResult();
+        restResult.setSuccess(false);
+        restResult.setCode(serverCodeEnum.getCode());
+        restResult.setMessage(serverCodeEnum.getMemo());
         return restResult;
     }
 

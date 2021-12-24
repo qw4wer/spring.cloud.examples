@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.qw4wer.spring.cloud.nacos.examples.provider.data.mapper.master.ISysPermissionMapper">
+
+	<!-- 查询的resultMap to sysPermission -->
+	<resultMap type="com.qw4wer.spring.cloud.nacos.examples.common.data.pojo.SysPermission" id="sysPermissionResultMap">
+		<result property="id" column="id" />
+		<result property="name" column="name" />
+		<result property="url" column="url" />
+	</resultMap>
+	
+	<!-- 插入一条 sysPermission -->
+	<insert id="addSysPermission" parameterType="com.qw4wer.spring.cloud.nacos.examples.common.data.pojo.SysPermission">
+		<selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
+			SELECT @@IDENTITY
+		</selectKey>
+		
+		insert into sys_permission(
+				id,
+				name,
+				url
+		)
+		VALUES(
+				#{id},
+				#{name},
+				#{url}
+		)
+	</insert>	
+	
+	<update id="deleteSysPermission" parameterType="int">
+		update sys_permission set is_deleted='1' where id=#{id}
+	</update>
+	
+	<!-- 根据id更新一条 sysPermission -->
+	<update id="updateSysPermission" parameterType="com.qw4wer.spring.cloud.nacos.examples.common.data.pojo.SysPermission">
+		update sys_permission set 
+		name=#{name},
+		url=#{url}
+		where id = #{id}
+	</update>
+	
+	<!-- 根据id查询一条 sysPermission -->
+	<select id="findSysPermissionById" resultMap="sysPermissionResultMap">
+		select * from sys_permission where id=#{id}
+	</select>
+	
+	<!-- 按条件分页查询 sysPermission -->
+	<select id="findSysPermissionByPage" resultMap="sysPermissionResultMap" parameterType="com.qw4wer.spring.cloud.nacos.examples.common.data.pojo.SysPermissionCond">
+		select * from sys_permission
+		<include refid="findWhereCond"/> 
+	</select>		
+	
+	<!-- 按条件查询所有 sysPermission -->
+	<select id="findSysPermissionByCond" resultMap="sysPermissionResultMap" parameterType="com.qw4wer.spring.cloud.nacos.examples.common.data.pojo.SysPermissionCond">
+		select * from sys_permission
+		<include refid="findWhereCond"/> 
+	</select>	
+	
+	<!-- 查询条件 -->
+	<sql id="findWhereCond"> 
+		<where>
+            <if test="name != null and name !=''">
+                AND name = #{name}
+            </if>
+            <if test="url != null and url !=''">
+                AND url = #{url}
+            </if>
+		</where>
+	</sql>
+
+    <update id="batchInsertSysPermission">
+        insert into sys_permission(
+                    id,
+                    name,
+                    url
+		)
+        values
+        <foreach collection="collection" item="item" separator=",">
+            (
+                    #{item.id},
+                    #{item.name},
+                    #{item.url}
+            )
+        </foreach>
+	</update>
+
+	<select id="findPermissionByUserId" resultMap="sysPermissionResultMap" parameterType="long">
+		SELECT sp.url, sp.name, sp.id
+		FROM sys_user_role ur
+				 JOIN sys_role_permission rp ON rp.role_id = ur.role_id
+				 JOIN sys_permission sp ON rp.permission_id = sp.id
+	</select>
+</mapper>

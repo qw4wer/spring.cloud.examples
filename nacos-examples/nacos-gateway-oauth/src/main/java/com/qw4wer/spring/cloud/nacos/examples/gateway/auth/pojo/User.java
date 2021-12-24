@@ -1,6 +1,7 @@
 package com.qw4wer.spring.cloud.nacos.examples.gateway.auth.pojo;
 
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.experimental.Accessors;
 import org.springframework.security.core.GrantedAuthority;
@@ -13,10 +14,10 @@ import java.util.stream.Collectors;
 
 @Data
 @Accessors(chain = true)
-@AllArgsConstructor
+@Builder
 public class User implements UserDetails {
 
-    private Integer id;
+    private Long id;
 
     private String username;
 

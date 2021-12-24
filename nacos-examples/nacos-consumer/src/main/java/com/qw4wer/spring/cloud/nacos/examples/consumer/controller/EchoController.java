@@ -1,9 +1,9 @@
 package com.qw4wer.spring.cloud.nacos.examples.consumer.controller;
 
 import com.alibaba.nacos.api.config.annotation.NacosValue;
+import com.qw4wer.spring.cloud.nacos.examples.common.data.pojo.SysUser;
 import com.qw4wer.spring.cloud.nacos.examples.consumer.api.GolangClient;
 import com.qw4wer.spring.cloud.nacos.examples.consumer.api.ProductClient;
-import com.qw4wer.spring.cloud.nacos.examples.consumer.api.pojo.User;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.web.bind.annotation.*;
@@ -38,12 +38,13 @@ public class EchoController {
         logger.info("you are calling welcome");
         return golangClient.welcome();
     }
+
     @PostMapping("/callPost")
     @ResponseBody
-    public User callPost(@RequestBody User user, HttpServletRequest request) {
+    public SysUser callPost(@RequestBody SysUser sysUser, HttpServletRequest request) {
         System.out.println(request.getAttributeNames());
         logger.info("you are calling post");
-        User post = productClient.post(user);
+        SysUser post = productClient.post(sysUser);
 
         return post;
     }

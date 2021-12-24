@@ -1,6 +1,6 @@
 package com.qw4wer.spring.cloud.nacos.examples.gateway.auth.security;
 
-import com.qw4wer.spring.cloud.nacos.examples.gateway.auth.services.MyUserDetailsService;
+import com.qw4wer.spring.cloud.nacos.examples.gateway.auth.services.impl.MyUserDetailsService;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AbstractUserDetailsReactiveAuthenticationManager;
@@ -37,7 +37,7 @@ public class AuthenticationManager extends AbstractUserDetailsReactiveAuthentica
         return retrieveUser(username)
                 .publishOn(scheduler)
                 .filter(u -> passwordEncoder.matches(presentedPassword, u.getPassword()))
-                .switchIfEmpty(Mono.defer(() -> Mono.error(new BadCredentialsException("Invalid Credentials"))))
+                .switchIfEmpty(Mono.defer(() -> Mono.error(new BadCredentialsException("密码错误"))))
                 .flatMap(userDetails -> Mono.just(userDetails))
                 .map(u -> new AuthenticationToken(u, u.getPassword(), u.getAuthorities()));
     }

@@ -7,12 +7,6 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.server.ServerWebExchange;
 import reactor.core.publisher.Mono;
 
-/**
- * 将表单参数转换为AuthenticationToken
- *
- * @Author: pilsy
- * @Date: 2020/7/15 0015 15:41
- */
 @Component
 public class AuthenticationConverter extends ServerFormLoginAuthenticationConverter {
 

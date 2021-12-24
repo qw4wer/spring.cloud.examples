@@ -28,6 +28,10 @@ spring:
           uri: lb://nacos-provider
           predicates:
             - Path=/pull
+
+feign:
+  circuitbreaker:
+    enabled: true
+
 logging:
-  level:
-    org.springframework: debug
+  config: classpath:logback.xml

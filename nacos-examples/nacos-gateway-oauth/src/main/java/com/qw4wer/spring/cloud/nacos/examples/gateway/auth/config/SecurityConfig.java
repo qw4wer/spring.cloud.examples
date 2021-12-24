@@ -1,10 +1,10 @@
 package com.qw4wer.spring.cloud.nacos.examples.gateway.auth.config;
 
-import com.qw4wer.spring.cloud.nacos.examples.gateway.auth.enums.ServerCodeEnum;
+import com.qw4wer.spring.cloud.nacos.examples.common.enums.ServerCodeEnum;
 import com.qw4wer.spring.cloud.nacos.examples.gateway.auth.security.AuthenticationConverter;
 import com.qw4wer.spring.cloud.nacos.examples.gateway.auth.security.AuthorizeConfigManager;
 import com.qw4wer.spring.cloud.nacos.examples.gateway.auth.utils.ResponseUtils;
-import com.qw4wer.spring.cloud.nacos.examples.gateway.auth.utils.RestResult;
+import com.qw4wer.spring.cloud.nacos.examples.common.RestResult;
 import lombok.extern.apachecommons.CommonsLog;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
@@ -110,7 +110,7 @@ public class SecurityConfig {
     @Bean
     public ServerAuthenticationFailureHandler jsonServerAuthenticationFailureHandler() {
         ServerAuthenticationFailureHandler entryPoint = (webFilterExchange, authentication) -> {
-            RestResult restResult = RestResult.error(500,authentication.getMessage());
+            RestResult restResult = RestResult.error(200,authentication.getMessage());
             return ResponseUtils.write(webFilterExchange.getExchange().getResponse(), restResult);
         };
         return entryPoint;

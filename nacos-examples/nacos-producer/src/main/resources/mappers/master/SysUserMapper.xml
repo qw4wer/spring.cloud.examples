@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.qw4wer.spring.cloud.nacos.examples.provider.data.mapper.master.ISysUserMapper">
+
+	<!-- 查询的resultMap to sysUser -->
+	<resultMap type="com.qw4wer.spring.cloud.nacos.examples.common.data.pojo.SysUser" id="sysUserResultMap">
+		<result property="id" column="id" />
+		<result property="userName" column="user_name" />
+		<result property="realName" column="real_name" />
+		<result property="password" column="password" />
+	</resultMap>
+	
+	<!-- 插入一条 sysUser -->
+	<insert id="addSysUser" parameterType="com.qw4wer.spring.cloud.nacos.examples.common.data.pojo.SysUser">
+		<selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
+			SELECT @@IDENTITY
+		</selectKey>
+		
+		insert into sys_user(
+				id,
+				user_name,
+				real_name,
+				password
+		)
+		VALUES(
+				#{id},
+				#{userName},
+				#{realName},
+				#{password}
+		)
+	</insert>	
+	
+	<update id="deleteSysUser" parameterType="int">
+		update sys_user set is_deleted='1' where id=#{id}
+	</update>
+	
+	<!-- 根据id更新一条 sysUser -->
+	<update id="updateSysUser" parameterType="com.qw4wer.spring.cloud.nacos.examples.common.data.pojo.SysUser">
+		update sys_user set 
+		user_name=#{userName},
+		real_name=#{realName},
+		password=#{password}
+		where id = #{id}
+	</update>
+	
+	<!-- 根据id查询一条 sysUser -->
+	<select id="findSysUserById" resultMap="sysUserResultMap">
+		select * from sys_user where id=#{id}
+	</select>
+	
+	<!-- 按条件分页查询 sysUser -->
+	<select id="findSysUserByPage" resultMap="sysUserResultMap" parameterType="com.qw4wer.spring.cloud.nacos.examples.common.data.pojo.SysUserCond">
+		select * from sys_user
+		<include refid="findWhereCond"/> 
+	</select>		
+	
+	<!-- 按条件查询所有 sysUser -->
+	<select id="findSysUserByCond" resultMap="sysUserResultMap" parameterType="com.qw4wer.spring.cloud.nacos.examples.common.data.pojo.SysUserCond">
+		select * from sys_user
+		<include refid="findWhereCond"/> 
+	</select>	
+	
+	<!-- 查询条件 -->
+	<sql id="findWhereCond"> 
+		<where>
+            <if test="userName != null and userName !=''">
+                AND user_name = #{userName}
+            </if>
+            <if test="realName != null and realName !=''">
+                AND real_name = #{realName}
+            </if>
+            <if test="password != null and password !=''">
+                AND password = #{password}
+            </if>
+		</where>
+	</sql>
+
+    <update id="batchInsertSysUser">
+        insert into sys_user(
+                    id,
+                    user_name,
+                    real_name,
+                    password
+		)
+        values
+        <foreach collection="collection" item="item" separator=",">
+            (
+                    #{item.id},
+                    #{item.userName},
+                    #{item.realName},
+                    #{item.password}
+            )
+        </foreach>
+	</update>
+</mapper>

@@ -1,7 +1,7 @@
 package com.qw4wer.spring.cloud.nacos.examples.consumer.api.fallback;
 
+import com.qw4wer.spring.cloud.nacos.examples.common.data.pojo.SysUser;
 import com.qw4wer.spring.cloud.nacos.examples.consumer.api.ProductClient;
-import com.qw4wer.spring.cloud.nacos.examples.consumer.api.pojo.User;
 import org.springframework.cloud.openfeign.FallbackFactory;
 import org.springframework.stereotype.Component;
 
@@ -16,8 +16,8 @@ public class ProductClientFallbackFactory implements FallbackFactory<ProductClie
             }
 
             @Override
-            public User post(User user) {
-                return new User();
+            public SysUser post(SysUser user) {
+                return new SysUser();
             }
         };
     }
