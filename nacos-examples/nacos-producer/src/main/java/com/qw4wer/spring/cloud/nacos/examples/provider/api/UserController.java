@@ -4,6 +4,7 @@ import com.qw4wer.spring.cloud.nacos.examples.common.RestResult;
 import com.qw4wer.spring.cloud.nacos.examples.common.data.dto.SysUserDto;
 import com.qw4wer.spring.cloud.nacos.examples.common.data.pojo.SysUser;
 import com.qw4wer.spring.cloud.nacos.examples.provider.data.services.ISysUserServices;
+import org.springframework.http.MediaType;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.ObjectError;
 import org.springframework.validation.annotation.Validated;
@@ -31,9 +32,9 @@ public class UserController {
         return RestResult.success(userById);
     }
 
-    @RequestMapping("/addUser")
+    @RequestMapping(value = "/addUser", produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseBody
-    public RestResult addUser(@RequestBody @Validated SysUser user, BindingResult bindingResult) {
+    public RestResult<SysUser> addUser(@RequestBody @Validated(SysUser.A.class) SysUser user, BindingResult bindingResult) {
         System.out.println(user);
         if (bindingResult.hasErrors()) {
             return this.getMessage(bindingResult);

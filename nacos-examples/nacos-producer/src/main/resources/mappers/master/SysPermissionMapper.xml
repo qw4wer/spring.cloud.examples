@@ -86,7 +86,7 @@
 	</update>
 
 	<select id="findPermissionByUserId" resultMap="sysPermissionResultMap" parameterType="long">
-		SELECT sp.url, sp.name, sp.id
+		SELECT  sp.id,sp.url, sp.name
 		FROM sys_user_role ur
 				 JOIN sys_role_permission rp ON rp.role_id = ur.role_id
 				 JOIN sys_permission sp ON rp.permission_id = sp.id

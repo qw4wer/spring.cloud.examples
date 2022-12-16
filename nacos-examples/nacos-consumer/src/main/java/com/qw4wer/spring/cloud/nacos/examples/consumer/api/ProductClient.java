@@ -1,6 +1,7 @@
 package com.qw4wer.spring.cloud.nacos.examples.consumer.api;
 
 
+import com.qw4wer.spring.cloud.nacos.examples.common.RestResult;
 import com.qw4wer.spring.cloud.nacos.examples.common.data.pojo.SysUser;
 import com.qw4wer.spring.cloud.nacos.examples.consumer.api.fallback.ProductClientFallbackFactory;
 import org.springframework.cloud.openfeign.FeignClient;
@@ -14,5 +15,5 @@ public interface ProductClient {
     String hello();
 
     @PostMapping("/user/addUser")
-    SysUser post(SysUser user);
+    RestResult<SysUser> post(SysUser user);
 }

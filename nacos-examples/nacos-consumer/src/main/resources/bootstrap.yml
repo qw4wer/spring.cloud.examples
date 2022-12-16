@@ -7,9 +7,9 @@ spring:
   cloud:
     nacos:
       discovery:
-        server-addr: 172.16.8.90:8848
+        server-addr: 10.0.0.20:8848
       config:
-        server-addr: 172.16.8.90:8848
+        server-addr: 10.0.0.20:8848
 
 feign:
   circuitbreaker:

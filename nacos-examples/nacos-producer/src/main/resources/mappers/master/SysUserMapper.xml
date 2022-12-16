@@ -13,7 +13,7 @@
 	
 	<!-- 插入一条 sysUser -->
 	<insert id="addSysUser" parameterType="com.qw4wer.spring.cloud.nacos.examples.common.data.pojo.SysUser">
-		<selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
+		<selectKey resultType="java.lang.Long" keyProperty="id" order="AFTER" >
 			SELECT @@IDENTITY
 		</selectKey>
 		

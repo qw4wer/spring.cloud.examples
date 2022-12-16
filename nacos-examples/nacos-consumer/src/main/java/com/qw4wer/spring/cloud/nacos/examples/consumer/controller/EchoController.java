@@ -1,6 +1,7 @@
 package com.qw4wer.spring.cloud.nacos.examples.consumer.controller;
 
 import com.alibaba.nacos.api.config.annotation.NacosValue;
+import com.qw4wer.spring.cloud.nacos.examples.common.RestResult;
 import com.qw4wer.spring.cloud.nacos.examples.common.data.pojo.SysUser;
 import com.qw4wer.spring.cloud.nacos.examples.consumer.api.GolangClient;
 import com.qw4wer.spring.cloud.nacos.examples.consumer.api.ProductClient;
@@ -41,11 +42,11 @@ public class EchoController {
 
     @PostMapping("/callPost")
     @ResponseBody
-    public SysUser callPost(@RequestBody SysUser sysUser, HttpServletRequest request) {
-        System.out.println(request.getAttributeNames());
-        logger.info("you are calling post");
-        SysUser post = productClient.post(sysUser);
+    public RestResult<SysUser> callPost(@RequestBody SysUser sysUser, HttpServletRequest request) {
 
+        logger.info("you are calling post");
+        RestResult<SysUser> post = productClient.post(sysUser);
+        System.out.println(post);
         return post;
     }
 }
