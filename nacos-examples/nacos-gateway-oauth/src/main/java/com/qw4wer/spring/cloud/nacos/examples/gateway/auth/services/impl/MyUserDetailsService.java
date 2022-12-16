@@ -7,10 +7,10 @@ import com.qw4wer.spring.cloud.nacos.examples.gateway.auth.pojo.User;
 import com.qw4wer.spring.cloud.nacos.examples.gateway.auth.provider.AuthProvider;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.authentication.ProviderNotFoundException;
 import org.springframework.security.core.userdetails.ReactiveUserDetailsService;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import reactor.core.publisher.Mono;
 
@@ -30,7 +30,8 @@ public class MyUserDetailsService implements ReactiveUserDetailsService {
         RestResult<SysUserDto> userByUniqueId = authProvider.getUserByUniqueId(username);
 
         if (userByUniqueId.getCode() != 200) {
-            return Mono.error(new RuntimeException());
+//            return Mono.error(new RuntimeException(userByUniqueId.getMessage()));
+            throw new ProviderNotFoundException(userByUniqueId.getMessage());
         }
         SysUserDto sysUserDto = userByUniqueId.getData();
         if (sysUserDto == null) {
