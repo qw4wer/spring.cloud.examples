@@ -15,6 +15,6 @@ public class AuthProviderFallback implements AuthProvider{
     @Override
     public RestResult<SysUserDto> getUserByUniqueId(String uniqueId) {
         log.error(uniqueId);
-        return RestResult.error("network");
+        return RestResult.error("network error");
     }
 }

@@ -25,6 +25,7 @@ spring:
         server-addr: 10.0.0.20:8848
       config:
         server-addr: 10.0.0.20:8848
+        file-extension: yaml  #后缀名
 
   application:
     name: nacos-provider

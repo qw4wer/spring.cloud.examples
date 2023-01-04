@@ -15,7 +15,7 @@
   <packaging>pom</packaging>
 
   <modules>
-    <module>nacos-examples</module>
+    <module>nacos-examples</module><module>simple-examples</module>
   </modules>
 
   <properties>

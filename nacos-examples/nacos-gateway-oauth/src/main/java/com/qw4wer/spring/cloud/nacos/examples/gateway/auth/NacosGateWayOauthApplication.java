@@ -8,11 +8,15 @@ import org.springframework.boot.autoconfigure.http.HttpMessageConverters;
 import org.springframework.cloud.openfeign.EnableFeignClients;
 import org.springframework.context.annotation.Bean;
 import org.springframework.http.converter.HttpMessageConverter;
+import springfox.documentation.oas.annotations.EnableOpenApi;
+import springfox.documentation.swagger2.annotations.EnableSwagger2;
 
 import java.util.stream.Collectors;
 
 @SpringBootApplication
 @EnableFeignClients
+@EnableOpenApi
+@EnableSwagger2
 public class NacosGateWayOauthApplication {
 
     public static void main(String[] args) {
