@@ -14,9 +14,6 @@ import java.util.List;
 import springfox.documentation.swagger.web.SwaggerResource;
 import springfox.documentation.swagger.web.SwaggerResourcesProvider;
 
-/**
- * @author: shf description: date: 2022/3/28 14:16
- */
 @Component
 @Primary
 @Slf4j
