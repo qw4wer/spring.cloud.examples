@@ -19,6 +19,7 @@
     <module>nacos-oauth</module>
     <module>nacos-stream</module>
     <module>nacos-common</module>
+    <module>seata</module>
   </modules>
 
   <properties>

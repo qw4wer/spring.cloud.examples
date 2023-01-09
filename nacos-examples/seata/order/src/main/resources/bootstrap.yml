@@ -1,0 +1,46 @@
+server:
+  port: 8853
+
+spring:
+  application:
+    name: nacos-seata-order
+  cloud:
+    nacos:
+      discovery:
+        server-addr: 10.0.0.20:8848
+      config:
+        server-addr: 10.0.0.20:8848
+
+  datasource:
+    druid:
+        url: jdbc:mysql://10.0.0.2:3306/seata_order?useUnicode=true&serverTimezone=Asia/Shanghai
+        username: dev
+        password: 1707@!Es
+logging:
+  config: classpath:logback.xml
+
+seata:
+  config:
+    type: nacos
+    nacos:
+      server-addr: 10.0.0.20:8848
+      namespace:
+      group: SEATA_GROUP
+      username: nacos
+      password: nacos
+
+  registry:
+    type: nacos
+    nacos:
+      application: seata-server
+      server-addr: 10.0.0.20:8848
+      group: SEATA_GROUP
+      namespace:
+      # tc集群名称
+      cluster: default
+      username: nacos
+      password: nacos
+  tx-service-group: my_test_tx_group
+  service:
+    vgroup-mapping:
+      my_test_tx_group: default
