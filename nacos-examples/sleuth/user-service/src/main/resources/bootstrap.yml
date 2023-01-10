@@ -1,0 +1,19 @@
+server:
+  port: 8852
+spring:
+  application:
+    name: nacos-sleuth-user-service
+  cloud:
+    nacos:
+      discovery:
+        server-addr: 10.0.0.20:8848
+      config:
+        server-addr: 10.0.0.20:8848
+  zipkin:
+    base-url: http://10.0.0.22:9411/
+    discovery-client-enabled: false
+  sleuth:
+    sampler:
+      percentage: 1.0
+logging:
+  config: classpath:logback.xml

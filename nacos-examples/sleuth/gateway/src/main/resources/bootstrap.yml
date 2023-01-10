@@ -1,0 +1,30 @@
+server:
+  port: 8853
+spring:
+  application:
+    name: nacos-sleuth-gateway
+  cloud:
+    nacos:
+      discovery:
+        server-addr: 10.0.0.20:8848
+      config:
+        server-addr: 10.0.0.20:8848
+    gateway:
+      discovery:
+        locator:
+          enabled: true
+      routes:
+        - id: userService
+          uri: lb://nacos-sleuth-user-service
+          predicates:
+            - Path=/user/**
+  zipkin:
+    base-url: http://10.0.0.22:9411/
+    discovery-client-enabled: false
+  sleuth:
+    sampler:
+      probability: 1
+
+
+logging:
+  config: classpath:logback.xml

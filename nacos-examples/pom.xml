@@ -20,6 +20,7 @@
     <module>nacos-stream</module>
     <module>nacos-common</module>
     <module>seata</module>
+    <module>sleuth</module>
   </modules>
 
   <properties>
